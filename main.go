@@ -11,4 +11,5 @@ func main() {
 		log.Fatalln(err)
 	}
 	fmt.Println(recursers)
+	fmt.Println(len(recursers))
 }
