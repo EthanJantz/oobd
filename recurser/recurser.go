@@ -40,6 +40,10 @@ func  List() ([]Recurser, error) {
 			return nil, err
 		}
 
+		if uid < 1000 || uid >= 30000 {
+			continue
+		}
+
 		r := Recurser{
 			uid: uint32(uid), 
 			homeDir: homeDir,
