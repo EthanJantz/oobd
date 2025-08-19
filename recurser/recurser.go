@@ -7,11 +7,19 @@ import "fmt"
 import "bufio"
 
 func Test(){
-	fmt.Println("This is recurser")
+	fmt.Println("This is OOBD")
 }
 
-func List() ([]uint32, error) {
-	// read etc passwd
+type Recurser struct {
+	uid uint32
+	homeDir string
+}
+
+func (r *Recurser) GetRcid() (uint32) {
+	return r.uid - 1000
+}
+
+func  List() ([]Recurser, error) {
 	passwdFile, err := os.Open("/etc/passwd")
 	if err != nil {
 		return nil, err
@@ -19,28 +27,29 @@ func List() ([]uint32, error) {
 
 	defer passwdFile.Close()
 
-	// iterate over each line |> extract uid
-	var recursers []uint32
+	var recursers []Recurser
 	scanner := bufio.NewScanner(passwdFile)
 	for scanner.Scan() {
 		splitLine := strings.Split(scanner.Text(), ":")
 		uidStr := splitLine[2]
+
+		homeDir := splitLine[5]
 
 		uid, err := strconv.ParseUint(uidStr, 10, 32)
 		if err != nil {
 			return nil, err
 		}
 
-		recursers = append(recursers, uint32(uid))
+		r := Recurser{
+			uid: uint32(uid), 
+			homeDir: homeDir,
+		}
+
+		recursers = append(recursers, r)
 	}
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 
-	// return a list of users
 	return recursers, nil
-}
-
-func Info(){
-	
 }
