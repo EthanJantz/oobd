@@ -3,6 +3,7 @@ package main
 import "log"
 import "fmt"
 import "github.com/ethanjantz/oobd/recurser"
+import "github.com/ethanjantz/oobd/rcapi"
 
 func main() {
 	recurser.Test()
@@ -12,4 +13,8 @@ func main() {
 	}
 	fmt.Println(recursers)
 	fmt.Println(len(recursers))
+	_, err = rcapi.IsInBatch(100)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }
