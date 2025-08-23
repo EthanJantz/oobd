@@ -1,9 +1,12 @@
 package main
 
-import "log"
-import "fmt"
-import "github.com/ethanjantz/oobd/recurser"
-import "github.com/ethanjantz/oobd/rcapi"
+import (
+	"fmt"
+	"log"
+
+	"github.com/ethanjantz/oobd/rcapi"
+	"github.com/ethanjantz/oobd/recurser"
+)
 
 func main() {
 	recurser.Test()
@@ -12,10 +15,15 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	InBatch, err := rcapi.IsInBatch(100)
-	if err != nil {
-		log.Fatalln(err)
-	}
+	fmt.Printf("%s", recursers)
 
-	fmt.Println("%+v", InBatch)
+	for r := range recursers {
+		fmt.Printf("Recurser: %+v", r)
+		rcID := 100
+		InBatch, err := rcapi.IsInBatch(uint32(rcID))
+		if err != nil {
+			log.Fatalln(err)
+		}
+		fmt.Println(InBatch)
+	}
 }

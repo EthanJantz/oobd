@@ -1,18 +1,27 @@
+// Package rcapi provides an interface for accessing the RC API
 package rcapi
-import "fmt"
-import "time"
-import "io"
-import "errors"
-import "net/http"
-import "encoding/json"
-type rcApi struct {
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"time"
+)
+
+// testURL Expects an environment variable named RECURSE_TOKEN
+var testURL = "https://www.recurse.com/api/v1/people/me" + "?access_token=" + os.Getenv("RECURSE_TOKEN")
+
+type rcAPI struct {
 	Stints []struct {
 		EndDate string `json:"end_date"`
 	} `json:"stints"`
 }
 
 func IsInBatch(rcid uint32) (bool, error) {
-	resp, err := http.Get(BASE_URL)
+	resp, err := http.Get(testURL)
 	if err != nil {
 		return false, err
 	}
@@ -27,13 +36,13 @@ func IsInBatch(rcid uint32) (bool, error) {
 		return false, err
 	}
 
-	var InBatch rcApi
+	var InBatch rcAPI
 	err = json.Unmarshal(body, &InBatch)
 	if err != nil {
 		fmt.Println("error: ", err)
 		return false, err
 	}
-	
+
 	LastEndDate := InBatch.Stints[len(InBatch.Stints)-1].EndDate
 	fmt.Println(LastEndDate)
 
@@ -49,4 +58,3 @@ func IsInBatch(rcid uint32) (bool, error) {
 
 	return OutOfBatch, nil
 }
-

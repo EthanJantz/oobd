@@ -1,25 +1,28 @@
+// Package recurser provides tools for identifying recursers on the HEAP
 package recurser
 
-import "strconv"
-import "strings"
-import "os"
-import "fmt"
-import "bufio"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
-func Test(){
+func Test() {
 	fmt.Println("This is OOBD")
 }
 
 type Recurser struct {
-	uid uint32
+	uid     uint32
 	homeDir string
 }
 
-func (r *Recurser) GetRcid() (uint32) {
+func (r *Recurser) GetRcid() uint32 {
 	return r.uid - 1000
 }
 
-func  List() ([]Recurser, error) {
+func List() ([]Recurser, error) {
 	passwdFile, err := os.Open("/etc/passwd")
 	if err != nil {
 		return nil, err
@@ -45,7 +48,7 @@ func  List() ([]Recurser, error) {
 		}
 
 		r := Recurser{
-			uid: uint32(uid), 
+			uid:     uint32(uid),
 			homeDir: homeDir,
 		}
 
