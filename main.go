@@ -11,10 +11,11 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(recursers)
-	fmt.Println(len(recursers))
-	_, err = rcapi.IsInBatch(100)
+
+	InBatch, err := rcapi.IsInBatch(100)
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	fmt.Println("%+v", InBatch)
 }

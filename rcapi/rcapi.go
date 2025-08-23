@@ -1,13 +1,14 @@
 package rcapi
 import "fmt"
+import "time"
 import "io"
 import "errors"
 import "net/http"
 import "encoding/json"
 type rcApi struct {
-	Stint []struct {
+	Stints []struct {
 		EndDate string `json:"end_date"`
-	} `json:"stint"`
+	} `json:"stints"`
 }
 
 func IsInBatch(rcid uint32) (bool, error) {
@@ -32,7 +33,20 @@ func IsInBatch(rcid uint32) (bool, error) {
 		fmt.Println("error: ", err)
 		return false, err
 	}
+	
+	LastEndDate := InBatch.Stints[len(InBatch.Stints)-1].EndDate
+	fmt.Println(LastEndDate)
 
-	fmt.Printf("%s", InBatch)
-	return true, nil
+	const YYYYMMDD = "2006-01-02"
+	t, err := time.Parse(YYYYMMDD, LastEndDate)
+	if err != nil {
+		fmt.Println("error: ", err)
+		return false, err
+	}
+
+	curDate := time.Now()
+	OutOfBatch := t.Before(curDate)
+
+	return OutOfBatch, nil
 }
+
