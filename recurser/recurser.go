@@ -3,23 +3,18 @@ package recurser
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func Test() {
-	fmt.Println("This is OOBD")
-}
-
 type Recurser struct {
-	uid     uint32
-	homeDir string
+	UserId  uint32
+	HomeDir string
 }
 
-func (r *Recurser) GetRcid() uint32 {
-	return r.uid - 1000
+func (r *Recurser) RcId() uint32 {
+	return r.UserId - 1000
 }
 
 func List() ([]Recurser, error) {
@@ -43,13 +38,13 @@ func List() ([]Recurser, error) {
 			return nil, err
 		}
 
-		if uid < 1000 || uid >= 30000 {
+		if uid <= 1000 || uid >= 30000 {
 			continue
 		}
 
 		r := Recurser{
-			uid:     uint32(uid),
-			homeDir: homeDir,
+			UserId:  uint32(uid),
+			HomeDir: homeDir,
 		}
 
 		recursers = append(recursers, r)
