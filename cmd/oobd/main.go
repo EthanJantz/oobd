@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/ethanjantz/oobd/rcapi"
-	"github.com/ethanjantz/oobd/recurser"
+	"github.com/ethanjantz/oobd/pkg/rcapi"
+	"github.com/ethanjantz/oobd/pkg/recurser"
 )
 
 // TODO: config file, or just trust there's no spurious 404s from that API endpoint?
