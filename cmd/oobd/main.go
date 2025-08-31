@@ -15,7 +15,7 @@ var skip = map[uint32]struct{}{
 	2186: struct{}{},
 	2588: struct{}{},
 	1342: struct{}{},
-	124: struct{}{},
+	124:  struct{}{},
 	4453: struct{}{},
 	5127: struct{}{},
 	5809: struct{}{},
