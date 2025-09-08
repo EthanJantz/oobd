@@ -3,11 +3,16 @@ module github.com/ethanjantz/oobd
 go 1.24.6
 
 require (
+	github.com/dundee/gdu/v5 v5.31.0
+	github.com/stretchr/testify v1.9.0
+)
+
+require (
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.1 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgraph-io/badger/v3 v3.2103.2 // indirect
 	github.com/dgraph-io/ristretto v0.1.0 // indirect
-	github.com/dundee/gdu/v5 v5.31.0 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/gdamore/encoding v1.0.0 // indirect
 	github.com/gdamore/tcell/v2 v2.7.1 // indirect
@@ -23,6 +28,7 @@ require (
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/tview v0.0.0-20240204151237-861aa94d61c8 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
@@ -31,4 +37,5 @@ require (
 	golang.org/x/sys v0.20.0 // indirect
 	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
