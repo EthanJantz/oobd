@@ -112,3 +112,55 @@ func TestUpdate(t *testing.T) {
 		},
 	}, s.Recursers)
 }
+
+func TestNoScanChange(t *testing.T) {
+	now := time.Now()
+	s := Empty()
+
+	notif, err := s.UpdateFor(1000, scan.Result{}, now)
+	require.NoError(t, err)
+	assert.Nil(t, notif)
+	assert.Equal(t, map[uint32]UserState{
+		1000: UserState{
+			LatestScan:    scan.Result{},
+			Notifications: map[time.Time]Notification{},
+			Scheduled:     map[time.Time]scan.Result{},
+		},
+	}, s.Recursers)
+
+	f := scan.Meta{now, 42}
+	fs := scan.Result{"foo": f}
+	notif, err = s.UpdateFor(1000, fs, now)
+	require.NoError(t, err)
+	require.Equal(t, &Notification{
+		When:      now.Add(delGrace),
+		Scheduled: fs,
+		Deleted:   nil,
+	}, notif)
+	assert.Equal(t, map[uint32]UserState{
+		1000: UserState{
+			LatestScan: fs,
+			Notifications: map[time.Time]Notification{
+				now: *notif,
+			},
+			Scheduled: map[time.Time]scan.Result{
+				now.Add(delGrace): fs,
+			},
+		},
+	}, s.Recursers)
+
+	notif2, err := s.UpdateFor(1000, fs, now.Add(time.Second))
+	require.NoError(t, err)
+	assert.Nil(t, notif2)
+	assert.Equal(t, map[uint32]UserState{
+		1000: UserState{
+			LatestScan: fs,
+			Notifications: map[time.Time]Notification{
+				now: *notif,
+			},
+			Scheduled: map[time.Time]scan.Result{
+				now.Add(delGrace): fs,
+			},
+		},
+	}, s.Recursers)
+}
