@@ -1,11 +1,16 @@
 package main
 
 import (
+	"expvar"
+	"flag"
 	"fmt"
-	"log"
-
 	"github.com/ethanjantz/oobd/pkg/rcapi"
 	"github.com/ethanjantz/oobd/pkg/recurser"
+	"log"
+	"log/slog"
+	"os"
+	"strings"
+	"time"
 )
 
 // TODO: config file, or just trust there's no spurious 404s from that API endpoint?
@@ -20,6 +25,21 @@ var skip = map[uint32]struct{}{
 	5127: struct{}{},
 	5809: struct{}{},
 	6284: struct{}{},
+}
+
+type config struct {
+	port int
+	env  string
+	cors struct {
+		trustedOrigins []string
+	}
+
+	skip map[string]string
+}
+
+type application struct {
+	config config
+	logger *slog.Logger
 }
 
 func main() {
@@ -39,5 +59,32 @@ func main() {
 			log.Fatalln(err)
 		}
 		fmt.Println(InBatch)
+	}
+
+	var cfg config
+
+	flag.IntVar(&cfg.port, "port", 4000, "API server port")
+
+	flag.Func("cors-trusted-origins", "Trusted CORS origins (space separated)", func(val string) error {
+		cfg.cors.trustedOrigins = strings.Fields(val)
+		return nil
+	})
+
+	flag.Parse()
+
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+
+	expvar.Publish("timestamp", expvar.Func(func() any {
+		return time.Now().Unix()
+	}))
+
+	app := &application{
+		config: cfg,
+		logger: logger}
+
+	err = app.serve()
+	if err != nil {
+		logger.Error(err.Error())
+		os.Exit(1)
 	}
 }
