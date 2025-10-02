@@ -1,0 +1,21 @@
+* we'll stick with go
+* repo situation? (Geo)
+  * recurse org repo? should still be public, maybe?
+* state should handle multiple machines (Sharon)
+* notifications should group things by machines (Sharon)
+* zulip integration (Florian)
+* state needs to be persisted (Florian)
+  * sqlite
+  * duckdb
+  * json/whatever file?
+  * OMG PLEASE NOT AN ORM!!!1
+* actual daemon cmd / http request handling / dispatching (Geo)
+  * primary mode (querying other oobds to get scans and to trigger deletions, doing zulip interactions)
+  * worker mode (listening for commands / queries from primary daemon)
+* deployment
+  * root or privileged service account
+  * how to build the binary? github action? ansible can do it if all else fails
+  * automate deployment/updates with ansible
+* development method
+  * pairing as needed / desired
+  * people pick the isolated subsystem they wanna work on and work independently / we integrate different features after
