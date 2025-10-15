@@ -42,7 +42,7 @@ func (app *application) serve() error {
 		shutdownError <- nil
 	}()
 
-	app.logger.Info("starting server", "addr", srv.Addr, "env", app.config.env)
+	app.logger.Info("starting server", "addr", srv.Addr, "mode", app.config.mode)
 
 	err := srv.ListenAndServe()
 	if !errors.Is(err, http.ErrServerClosed) {
